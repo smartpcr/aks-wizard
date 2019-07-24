@@ -64,5 +64,16 @@ namespace Wizard.Assets
 
             return asset;
         }
+
+        public IList<IAsset> GetAllAssetsWithObjPath()
+        {
+            var assetsTypeWithObjPaths = AssetReader.AssetsWithObjPath;
+            var sortedComponents = _components.Where(c =>
+                    assetsTypeWithObjPaths.ContainsKey(c.GetType()))
+                .Select(c => c.Value)
+                .OrderBy(c => c.SortOrder)
+                .ToList();
+            return sortedComponents;
+        }
     }
 }

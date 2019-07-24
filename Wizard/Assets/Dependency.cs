@@ -6,8 +6,8 @@ namespace Wizard.Assets
     {
         public AssetType Type { get; }
         public string Key { get; set; }
-        public bool IsOptional { get; set; } = false;
-        public bool CanHaveMany { get; set; } = false;
+        public bool IsOptional { get; } = false;
+        public bool CanHaveMany { get; } = false;
 
         public Dependency(AssetType type, string key = null)
         {

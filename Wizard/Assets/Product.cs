@@ -1,20 +1,21 @@
 using System.Collections.Generic;
 using System.IO;
+using Microsoft.Extensions.Logging;
 
 namespace Wizard.Assets
 {
-    public class Product : IAsset
+    public class Product : BaseAsset
     {
         [PropertyPath("global/productName")]
         public string Name { get; set; }
 
-        public string Key { get; }
-        public AssetType Type => AssetType.Prodct;
-        public IList<Dependency> Dependencies => new List<Dependency>();
 
-        public int SortOrder { get; }
+        public override AssetType Type => AssetType.Prodct;
+        public override IList<Dependency> Dependencies => new List<Dependency>();
 
-        public void WriteYaml(StreamWriter writer, int indent = 0)
+        public override int SortOrder { get; }
+
+        public override void WriteYaml(StreamWriter writer, AssetManager assetManager, ILoggerFactory loggerFactory, int indent = 0)
         {
             var spaces = "".PadLeft(indent);
             writer.Write($"{spaces}productName: " + Name);

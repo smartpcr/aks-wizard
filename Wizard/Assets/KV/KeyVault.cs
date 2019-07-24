@@ -2,35 +2,33 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
+using Microsoft.Extensions.Logging;
 
 namespace Wizard.Assets.KV
 {
     [ObjectPath("kv")]
-    public class KeyVault : IAsset, IUniqueValidator
+    public class KeyVault : BaseAsset, IUniqueValidator
     {
-        [MaxLength(25), MinLength(3)]
-        public string Name { get; set; }
+        [MaxLength(25), MinLength(3)] public string Name { get; set; }
 
-        public string Key { get; }
 
-        public AssetType Type => AssetType.KeyVault;
+        public override AssetType Type => AssetType.KeyVault;
 
-        public IList<Dependency> Dependencies => new List<Dependency>()
+        public override IList<Dependency> Dependencies => new List<Dependency>()
         {
             new Dependency(AssetType.Subscription),
             new Dependency(AssetType.ResourceGroup)
         };
 
-        public int SortOrder { get; }
-        public void WriteYaml(StreamWriter writer, int indent = 0)
+        public override int SortOrder { get; } = 2;
+
+        public override void WriteYaml(StreamWriter writer, AssetManager assetManager, ILoggerFactory loggerFactory,
+            int indent = 0)
         {
-            throw new NotImplementedException();
+            var spaces = "".PadLeft(indent);
+            writer.Write($"{spaces}name: " + Name);
         }
 
-        public KeyVault()
-        {
-            Key = Guid.NewGuid().ToString();
-        }
 
         /// <summary>
         /// make sure vault name is unique globally

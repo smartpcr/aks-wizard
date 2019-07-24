@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.IO;
+using Microsoft.Extensions.Logging;
 
 namespace Wizard.Assets
 {
@@ -10,7 +11,7 @@ namespace Wizard.Assets
         IList<Dependency> Dependencies { get; }
         int SortOrder { get; }
 
-        void WriteYaml(StreamWriter writer, int indent = 0);
+        void WriteYaml(StreamWriter writer, AssetManager assetManager, ILoggerFactory loggerFactory, int indent = 0);
     }
 
     public enum AssetType

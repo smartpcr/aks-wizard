@@ -22,7 +22,7 @@ namespace Wizard.Assets
                 if (_components == null)
                 {
                     _components = typeof(AssetReader).Assembly.GetTypes()
-                        .Where(t => typeof(IAsset).IsAssignableFrom(t))
+                        .Where(t => typeof(IAsset).IsAssignableFrom(t) && !t.IsAbstract && t.IsClass)
                         .Select(t => Activator.CreateInstance(t) as IAsset)
                         .ToList();
                 }
@@ -40,6 +40,8 @@ namespace Wizard.Assets
                     _assetsWithObjPath = typeof(AssetReader).Assembly.GetTypes()
                         .Where(t =>
                             typeof(IAsset).IsAssignableFrom(t) &&
+                            !t.IsAbstract &&
+                            t.IsClass &&
                             t.GetCustomAttribute<ObjectPathAttribute>() != null)
                         .ToDictionary(t => t, t => t.GetCustomAttribute<ObjectPathAttribute>());
                 }
@@ -132,11 +134,14 @@ namespace Wizard.Assets
                         else
                         {
                             var token = jtoken.SelectToken(tuple.propPath.JPath);
-                            var propValue =
-                                JsonConvert.DeserializeObject(token.ToString(), tuple.prop.PropertyType);
-                            if (propValue != null)
+                            if (token != null)
                             {
-                                tuple.prop.SetValue(instance, propValue);
+                                var propValue =
+                                JsonConvert.DeserializeObject(token.ToString(), tuple.prop.PropertyType);
+                                if (propValue != null)
+                                {
+                                    tuple.prop.SetValue(instance, propValue);
+                                }
                             }
                         }
                     }

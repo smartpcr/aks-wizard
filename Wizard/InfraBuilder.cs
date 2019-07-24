@@ -9,12 +9,14 @@ namespace Wizard
     public class InfraBuilder
     {
         private readonly AssetManager _assetManager;
+        private readonly ILoggerFactory _loggerFactory;
         private readonly ILogger<InfraBuilder> _logger;
 
-        public InfraBuilder(AssetManager assetManager, ILogger<InfraBuilder> logger)
+        public InfraBuilder(AssetManager assetManager, ILoggerFactory loggerFactory)
         {
             _assetManager = assetManager;
-            _logger = logger;
+            _loggerFactory = loggerFactory;
+            _logger = loggerFactory.CreateLogger<InfraBuilder>();
         }
 
         public void Build(string manifestFile, string outputFolder)
@@ -47,7 +49,15 @@ namespace Wizard
                 Directory.CreateDirectory(outputFolder);
             }
 
-
+            var sortedComponents = _assetManager.GetAllAssetsWithObjPath();
+            var valueYamlFile = Path.Combine(outputFolder, "values.yaml");
+            using (var writer = new StreamWriter(File.OpenWrite(valueYamlFile)))
+            {
+                foreach (var asset in sortedComponents)
+                {
+                    asset.WriteYaml(writer, _assetManager, _loggerFactory);
+                }
+            }
         }
     }
 }

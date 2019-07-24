@@ -2,10 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
+using Microsoft.Extensions.Logging;
 
 namespace Wizard.Assets
 {
-    public class ResourceGroup: IAsset, IUniqueValidator
+    public class ResourceGroup : BaseAsset, IUniqueValidator
     {
         [Required, PropertyPath("global/resourceGroup")]
         public string Name { get; set; }
@@ -13,26 +14,23 @@ namespace Wizard.Assets
         [Required, PropertyPath("global/location")]
         public string Location { get; set; }
 
-        public string Key { get; }
-        public AssetType Type => AssetType.ResourceGroup;
-        public IList<Dependency> Dependencies => new List<Dependency>()
+        public override AssetType Type => AssetType.ResourceGroup;
+
+        public override IList<Dependency> Dependencies => new List<Dependency>()
         {
             new Dependency(AssetType.Subscription)
         };
 
-        public int SortOrder { get; }
+        public override int SortOrder { get; }
 
-        public ResourceGroup()
-        {
-            Key = Guid.NewGuid().ToString();
-        }
 
         public bool Validate()
         {
             return true;
         }
 
-        public void WriteYaml(StreamWriter writer, int indent = 0)
+        public override void WriteYaml(StreamWriter writer, AssetManager assetManager, ILoggerFactory loggerFactory,
+            int indent = 0)
         {
             var spaces = "".PadLeft(indent);
             writer.Write($"{spaces}resourceGroup: {Name}");

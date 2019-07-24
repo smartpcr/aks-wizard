@@ -2,7 +2,7 @@
   "profiles": {
     "Wizard": {
       "commandName": "Project",
-      "commandLineArgs": "infra"
+      "commandLineArgs": "infra gen \".\\Manifest\\onecs.json\" \"c:\\Users\\xiaodoli\\Desktop\\infra\""
     }
   }
 }

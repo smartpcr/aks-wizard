@@ -11,11 +11,14 @@ namespace Wizard
     {
         private readonly ServiceContext _context;
         private readonly ILogger<App> _logger;
+        private readonly InfraBuilder _infraBuilder;
 
-        public App(IOptions<ServiceContext> context, ILogger<App> logger)
+        public App(IOptions<ServiceContext> context, ILogger<App> logger,
+            InfraBuilder infraBuilder)
         {
             _context = context.Value;
             _logger = logger;
+            _infraBuilder = infraBuilder;
 
             Name = _context.Role;
             Description = _context.Description;
@@ -50,6 +53,7 @@ namespace Wizard
                         generateCmd.OnExecute(() =>
                         {
                             _logger.LogInformation($"Generating infra scripts based on manifest {manifestJsonFile.Value} and write to {outputFolder.Value}");
+                            _infraBuilder.Build(manifestJsonFile.Value, outputFolder.Value);
                         });
                     });
 
