@@ -14,7 +14,7 @@ namespace Wizard.Assets.KV
 
         public override AssetType Type => AssetType.KeyVault;
 
-        public override IList<Dependency> Dependencies => new List<Dependency>()
+        public override IList<Dependency> Dependencies { get; } = new List<Dependency>()
         {
             new Dependency(AssetType.Subscription),
             new Dependency(AssetType.ResourceGroup)
@@ -26,7 +26,7 @@ namespace Wizard.Assets.KV
             int indent = 0)
         {
             var spaces = "".PadLeft(indent);
-            writer.Write($"{spaces}name: " + Name);
+            writer.Write($"{spaces}name: {Name}\n");
         }
 
 

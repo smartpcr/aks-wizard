@@ -16,9 +16,9 @@ namespace Wizard.Assets
         public abstract AssetType Type { get; }
         public abstract IList<Dependency> Dependencies { get; }
         public abstract int SortOrder { get; }
-        public abstract void WriteYaml(StreamWriter writer, AssetManager assetManager, ILoggerFactory loggerFactory, int indent = 0);
 
-        protected void WriteDependencies(StreamWriter writer, AssetManager assetManager, ILoggerFactory loggerFactory, int indent = 0)
+        public virtual void WriteYaml(StreamWriter writer, AssetManager assetManager, ILoggerFactory loggerFactory,
+            int indent = 0)
         {
             var logger = loggerFactory.CreateLogger<BaseAsset>();
             foreach (var dependency in Dependencies)
@@ -30,9 +30,10 @@ namespace Wizard.Assets
                 else
                 {
                     var dependentAsset = assetManager.FindResolved(dependency);
-                    dependentAsset?.WriteYaml(writer, assetManager, loggerFactory, indent + 2);
+                    dependentAsset?.WriteYaml(writer, assetManager, loggerFactory, indent);
                 }
             }
         }
+
     }
 }

@@ -16,12 +16,12 @@ namespace Wizard.Assets
 
         public override AssetType Type => AssetType.ResourceGroup;
 
-        public override IList<Dependency> Dependencies => new List<Dependency>()
+        public override IList<Dependency> Dependencies { get; } = new List<Dependency>()
         {
             new Dependency(AssetType.Subscription)
         };
 
-        public override int SortOrder { get; }
+        public override int SortOrder { get; } = 0;
 
 
         public bool Validate()
@@ -33,8 +33,8 @@ namespace Wizard.Assets
             int indent = 0)
         {
             var spaces = "".PadLeft(indent);
-            writer.Write($"{spaces}resourceGroup: {Name}");
-            writer.Write($"{spaces}location: {Location}");
+            writer.Write($"{spaces}resourceGroup: {Name}\n");
+            writer.Write($"{spaces}location: {Location}\n");
         }
     }
 }

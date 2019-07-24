@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
+using System.Text;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 
@@ -10,27 +11,27 @@ namespace Wizard.Assets
     public class AzureSubscription: BaseAsset
     {
         [PropertyPath("global/subscriptionId")]
-        public Guid SubscriptionId { get; set; }
+        public string SubscriptionId { get; set; }
 
 
         [Required, PropertyPath("global/subscriptionName")]
         public string SubscriptionName { get; set; }
 
         [PropertyPath("global/tenantId")]
-        public Guid TenantId { get; set; }
+        public string TenantId { get; set; }
 
         public override AssetType Type => AssetType.Subscription;
 
-        public override IList<Dependency> Dependencies => new List<Dependency>();
+        public override IList<Dependency> Dependencies { get; } = new List<Dependency>();
 
 
-        public override int SortOrder { get; }
+        public override int SortOrder { get; } = 0;
 
         public override void WriteYaml(StreamWriter writer, AssetManager assetManager, ILoggerFactory loggerFactory, int indent = 0)
         {
             var spaces = "".PadLeft(indent);
-            writer.Write($"{spaces}subscriptionName: {SubscriptionName}");
-            writer.Write($"{spaces}subscriptionId: {SubscriptionId}");
+            writer.Write($"{spaces}subscriptionName: {SubscriptionName}\n");
+            writer.Write($"{spaces}subscriptionId: {SubscriptionId}\n");
         }
     }
 }

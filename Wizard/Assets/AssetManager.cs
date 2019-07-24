@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using Microsoft.Extensions.Logging;
 
 namespace Wizard.Assets
@@ -22,21 +23,34 @@ namespace Wizard.Assets
                 throw new Exception("Component already added");
             }
 
+            foreach (var dependency in component.Dependencies)
+            {
+                if (!dependency.IsOptional && !dependency.CanHaveMany)
+                {
+                    var foundDependency = _components.Values.FirstOrDefault(c =>
+                        c.Type == dependency.Type && !string.IsNullOrEmpty(c.Key));
+                    if (foundDependency != null)
+                    {
+                        dependency.Key = foundDependency.Key;
+                    }
+                }
+            }
+
             _components.Add(component.Key, component);
         }
 
-        public IList<IAsset> GetFulfilledComponents()
+        public IEnumerable<IAsset> GetFulfilledComponents()
         {
             var fulfilledComponents = _components.Values.Where(c => c.Dependencies.All(d => d.Key != null))
-                .OrderBy(c => c.SortOrder).ToList();
+                .OrderBy(c => c.SortOrder);
             return fulfilledComponents;
         }
 
-        public IList<IAsset> EvaluateUnfulfilledComponents(IAsset component)
+        public IEnumerable<IAsset> EvaluateUnfulfilledComponents(IAsset component)
         {
             var unfulfilledComponents = _components.Values.Where(c =>
                     c.Dependencies.Any(d => string.IsNullOrEmpty(d.Key) && d.Type == component.Type))
-                .OrderBy(c => c.SortOrder).ToList();
+                .OrderBy(c => c.SortOrder);
 
             foreach (var unfulfilledComponent in unfulfilledComponents)
             {
@@ -49,7 +63,7 @@ namespace Wizard.Assets
 
             var notFulfilledComponents = unfulfilledComponents
                 .Where(c => c.Dependencies.Any(d => string.IsNullOrEmpty(d.Key) && d.Type == component.Type))
-                .OrderBy(c => c.SortOrder).ToList();
+                .OrderBy(c => c.SortOrder);
             return notFulfilledComponents;
         }
 
@@ -65,14 +79,12 @@ namespace Wizard.Assets
             return asset;
         }
 
-        public IList<IAsset> GetAllAssetsWithObjPath()
+        public IEnumerable<IAsset> GetAllAssetsWithObjPath()
         {
             var assetsTypeWithObjPaths = AssetReader.AssetsWithObjPath;
-            var sortedComponents = _components.Where(c =>
+            var sortedComponents = _components.Values.Where(c =>
                     assetsTypeWithObjPaths.ContainsKey(c.GetType()))
-                .Select(c => c.Value)
-                .OrderBy(c => c.SortOrder)
-                .ToList();
+                .OrderBy(c => c.SortOrder);
             return sortedComponents;
         }
     }

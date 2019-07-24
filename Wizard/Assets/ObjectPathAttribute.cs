@@ -10,7 +10,7 @@ namespace Wizard.Assets
 
         public ObjectPathAttribute(string jpath, bool allowMultiple = false)
         {
-            JPath = jpath;
+            JPath = jpath.Replace("/", ".");
             AllowMultiple = allowMultiple;
         }
     }

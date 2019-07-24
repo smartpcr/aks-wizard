@@ -11,11 +11,11 @@ namespace Wizard.Assets
 {
     public class AssetReader
     {
-        private static List<IAsset> _components;
+        private static IEnumerable _components;
         private static Dictionary<Type, ObjectPathAttribute> _assetsWithObjPath;
         private static Dictionary<Type, IList<(PropertyInfo prop, PropertyPathAttribute propPath)>> _assetsWithPropPaths;
 
-        public static List<IAsset> Components
+        public static IEnumerable Components
         {
             get
             {
@@ -23,8 +23,7 @@ namespace Wizard.Assets
                 {
                     _components = typeof(AssetReader).Assembly.GetTypes()
                         .Where(t => typeof(IAsset).IsAssignableFrom(t) && !t.IsAbstract && t.IsClass)
-                        .Select(t => Activator.CreateInstance(t) as IAsset)
-                        .ToList();
+                        .Select(t => Activator.CreateInstance(t) as IAsset);
                 }
 
                 return _components;
@@ -71,7 +70,7 @@ namespace Wizard.Assets
             }
         }
 
-        public static IList<IAsset> Read(string manifestJsonFile)
+        public static IEnumerable<IAsset> Read(string manifestJsonFile)
         {
             var jtoken = JToken.Parse(File.ReadAllText(manifestJsonFile));
             List<IAsset> instances = new List<IAsset>();
@@ -88,7 +87,7 @@ namespace Wizard.Assets
                         {
                             foreach (var token in tokens)
                             {
-                                if (JsonConvert.DeserializeObject(token.ToString(), component.GetType()) is IAsset instance)
+                                if (token.Value(component.GetType()) is IAsset instance)
                                 {
                                     instances.Add(instance);
                                 }
@@ -100,7 +99,7 @@ namespace Wizard.Assets
                         var token = jtoken.SelectToken(objPath.JPath);
                         if (token != null)
                         {
-                            if (JsonConvert.DeserializeObject(token.ToString(), component.GetType()) is IAsset instance)
+                            if (token.Value(component.GetType()) is IAsset instance)
                             {
                                 instances.Add(instance);
                             }
@@ -115,14 +114,14 @@ namespace Wizard.Assets
                     {
                         if (tuple.propPath.IsArray)
                         {
+                            var itemType = tuple.prop.PropertyType.GetElementType();
                             var tokens = jtoken.SelectTokens(tuple.propPath.JPath);
                             if (tokens?.Any() == true)
                             {
                                 ArrayList array = new ArrayList();
                                 foreach (var token in tokens)
                                 {
-                                    var propValue =
-                                        JsonConvert.DeserializeObject(token.ToString(), tuple.prop.PropertyType);
+                                    var propValue = token.Value(itemType);
                                     if (propValue != null)
                                     {
                                         array.Add(propValue);
@@ -134,14 +133,10 @@ namespace Wizard.Assets
                         else
                         {
                             var token = jtoken.SelectToken(tuple.propPath.JPath);
-                            if (token != null)
+                            var propValue = token?.Value(tuple.prop.PropertyType);
+                            if (propValue != null)
                             {
-                                var propValue =
-                                JsonConvert.DeserializeObject(token.ToString(), tuple.prop.PropertyType);
-                                if (propValue != null)
-                                {
-                                    tuple.prop.SetValue(instance, propValue);
-                                }
+                                tuple.prop.SetValue(instance, propValue);
                             }
                         }
                     }
@@ -150,7 +145,7 @@ namespace Wizard.Assets
                 }
             }
 
-            return instances;
+            return instances.OrderBy(c => c.SortOrder);
         }
     }
 }

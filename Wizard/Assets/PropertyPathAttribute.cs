@@ -10,7 +10,7 @@ namespace Wizard.Assets
 
         public PropertyPathAttribute(string jpath, bool isArray = false)
         {
-            JPath = jpath;
+            JPath = jpath.Replace("/", ".");
             IsArray = isArray;
         }
     }

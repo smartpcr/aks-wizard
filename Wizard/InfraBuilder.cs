@@ -21,7 +21,7 @@ namespace Wizard
 
         public void Build(string manifestFile, string outputFolder)
         {
-            IList<IAsset> unresolvedAssets = null;
+            IEnumerable<IAsset> unresolvedAssets = null;
             var assets = AssetReader.Read(manifestFile);
             if (assets?.Any() == true)
             {
@@ -39,7 +39,7 @@ namespace Wizard
                     _logger.LogWarning($"Unable to resolve {asset.Type}");
                     var missingDependencyTypes = asset.Dependencies.Where(d =>
                             string.IsNullOrEmpty(d.Key))
-                        .Select(d => d.Type).ToList();
+                        .Select(d => d.Type);
                     _logger.LogWarning($"Unresolved components: {string.Join(",", missingDependencyTypes)}");
                 }
             }
@@ -51,6 +51,11 @@ namespace Wizard
 
             var sortedComponents = _assetManager.GetAllAssetsWithObjPath();
             var valueYamlFile = Path.Combine(outputFolder, "values.yaml");
+            if (File.Exists(valueYamlFile))
+            {
+                File.Delete(valueYamlFile);
+            }
+
             using (var writer = new StreamWriter(File.OpenWrite(valueYamlFile)))
             {
                 foreach (var asset in sortedComponents)

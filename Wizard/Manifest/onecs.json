@@ -1,18 +1,23 @@
 {
-  "productName": "onecs",
-  "subscription": "Compliance_Tools_Eng",
-  "location": "westus2",
-  "envName": "dev",
-  "spaceName": "xiaodoli",
-  "components": [
-    "kv",
-    "aks",
-    "acr",
-    "ai",
-    "cosmosdb",
-    "dns",
-    "redis"
-  ],
+  "global": {
+    "productName": "onecs",
+    "subscriptionName": "Compliance_Tools_Eng",
+    "subscriptionId": "f921dcc4-9d2c-4b73-a12e-8c3ca091af03",
+    "tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
+    "location": "westus2",
+    "envName": "dev",
+    "spaceName": "xiaodoli",
+    "resourceGroup": "onecs",
+    "components": [
+      "kv",
+      "aks",
+      "acr",
+      "ai",
+      "cosmosdb",
+      "dns",
+      "redis"
+    ]
+  },
   "azure": [],
   "services": []
 }
