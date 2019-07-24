@@ -119,7 +119,7 @@
       }
     ]
   },
-  "code": {
+  "services": {
     "external": [
       {
         "name": "service-tree"
@@ -127,15 +127,19 @@
     ],
     "services": [
       {
-        "name": "graph",
-        "type": "api"
+        "name": "onecs-graph",
+        "type": "api",
+        "isFrontend": true
       },
       {
-        "name": "assessment",
-        "type": "api"
+        "name": "onecs-assessment",
+        "type": "api",
+        "isFrontend": true
       },
       {
-        "name": "one"
+        "name": "onecs-web",
+        "type": "web",
+        "isFrontend": true
       }
     ]
   }
