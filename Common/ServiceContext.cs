@@ -7,6 +7,7 @@ namespace Common
         public string Version { get; set; }
         public string[] Tags { get; set; }
         public OrchestratorType Orchestrator { get; set; }
+        public string Description { get; set; }
     }
 
     public enum OrchestratorType

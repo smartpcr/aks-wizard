@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Wizard": {
+      "commandName": "Project",
+      "commandLineArgs": "infra"
+    }
+  }
+}
