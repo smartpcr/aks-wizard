@@ -21,7 +21,8 @@ namespace Wizard.Assets
         {
             new Dependency(AssetType.Subscription),
             new Dependency(AssetType.ResourceGroup),
-            new Dependency(AssetType.Prodct)
+            new Dependency(AssetType.Prodct),
+            new Dependency(AssetType.RequiredComponents)
         };
 
         public override int SortOrder { get; } = 1;

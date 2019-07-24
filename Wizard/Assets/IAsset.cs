@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using Microsoft.Extensions.Logging;
@@ -14,6 +15,12 @@ namespace Wizard.Assets
         void WriteYaml(StreamWriter writer, AssetManager assetManager, ILoggerFactory loggerFactory, int indent = 0);
     }
 
+    public interface IAssetArray
+    {
+        IAsset[] Items { get; set; }
+        Type ItemType { get; }
+    }
+
     public enum AssetType
     {
         Global,
@@ -22,8 +29,10 @@ namespace Wizard.Assets
         ResourceGroup,
         KeyVault,
         CosmosDb,
+        Terraform,
         ContainerRegistry,
         KubernetesCluster,
+        AppInsights,
         Dns,
         Prodct,
         Web,

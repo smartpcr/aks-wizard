@@ -53,10 +53,10 @@ namespace Wizard.Assets
             writer.Write($"{spaces}traffic: {Traffic}\n");
             writer.Write($"{spaces}redis: {Redis}\n");
             writer.Write($"{spaces}cosmosDb:\n");
-            spaces = "".PadLeft(indent + 2);
-            writer.Write($"{spaces}docDb: {CosmosDb.DocDb}\n");
-            writer.Write($"{spaces}mongoDb: {CosmosDb.MongoDb}\n");
-            writer.Write($"{spaces}mongoDb: {CosmosDb.GraphDb}\n");
+            spaces = "".PadLeft(indent + 4);
+            writer.Write($"{spaces}docDb: {CosmosDb?.DocDb == true}\n");
+            writer.Write($"{spaces}mongoDb: {CosmosDb?.MongoDb == true}\n");
+            writer.Write($"{spaces}mongoDb: {CosmosDb?.GraphDb == true}\n");
         }
 
         #endregion

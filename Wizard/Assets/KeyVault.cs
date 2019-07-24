@@ -9,14 +9,14 @@ namespace Wizard.Assets
     [ObjectPath("azure/kv")]
     public class KeyVault : BaseAsset, IUniqueValidator
     {
-        [MaxLength(25), MinLength(3)] public string Name { get; set; }
+        [MaxLength(25), MinLength(3)]
+        public string Name { get; set; }
 
-
+        #region override
         public override AssetType Type => AssetType.KeyVault;
 
         public override IList<Dependency> Dependencies { get; } = new List<Dependency>()
         {
-            new Dependency(AssetType.Subscription),
             new Dependency(AssetType.ResourceGroup)
         };
 
@@ -29,8 +29,9 @@ namespace Wizard.Assets
             writer.Write($"{spaces}kv:\n");
             spaces = "".PadLeft(indent + 2);
             writer.Write($"{spaces}name: {Name}\n");
+            base.WriteYaml(writer, assetManager, loggerFactory, indent + 2);
         }
-
+        #endregion
 
         /// <summary>
         /// make sure vault name is unique globally

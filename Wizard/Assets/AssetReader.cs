@@ -82,17 +82,44 @@ namespace Wizard.Assets
                     var objPath = AssetsWithObjPath[component.GetType()];
                     if (objPath.AllowMultiple)
                     {
-                        var tokens = jtoken.SelectTokens(objPath.JPath);
-                        if (tokens?.Any() == true)
+                        List<IAsset> array = new List<IAsset>();
+                        var componentInstance = Activator.CreateInstance(component.GetType()) as IAssetArray;
+                        if (componentInstance == null)
                         {
-                            foreach (var token in tokens)
+                            throw new Exception("Array must implements 'IAssetArray'");
+                        }
+
+                        var itemsProp = componentInstance.GetType().GetProperty("Items");
+                        var itemType = componentInstance.ItemType;
+
+                        var tokens = jtoken.SelectTokens(objPath.JPath).ToList();
+                        if (tokens.Count == 1)
+                        {
+                            if (tokens[0] is JArray tokenArray)
                             {
-                                if (token.Value(component.GetType()) is IAsset instance)
+                                foreach (var token in tokenArray)
                                 {
-                                    instances.Add(instance);
+                                    if (token.Value(itemType) is IAsset instance)
+                                    {
+                                        array.Add(instance);
+                                    }
                                 }
                             }
                         }
+                        else
+                        {
+                            foreach (var token in tokens)
+                            {
+                                if (token.Value(itemType) is IAsset instance)
+                                {
+                                    array.Add(instance);
+                                }
+                            }
+                        }
+
+
+                        itemsProp.SetValue(componentInstance, array.ToArray());
+                        instances.Add(componentInstance as IAsset);
                     }
                     else
                     {

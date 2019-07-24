@@ -13,7 +13,7 @@
       "aks": true,
       "acr": true,
       "ai": true,
-      "cosmosdb": {
+      "cosmosDb": {
         "docDb": true,
         "graphDb": true
       },
@@ -24,7 +24,100 @@
   "azure": {
     "kv": {
       "name": "xd-kv"
-    }
+    },
+    "terraform": {},
+    "acr": {
+      "name": "onecsdevacr"
+    },
+    "aks": {
+      "clusterName": "onecs-cluster",
+      "version": "1.13.7",
+      "nodeCount": 2,
+      "adminUserName": "xiaodoli@microsoft.com",
+      "access": {
+        "readers": [
+          {
+            "name": "Compliance Tooling Team",
+            "type": "group"
+          }
+        ],
+        "contributors": [
+          {
+            "name": "1cs dri",
+            "type": "group"
+          }
+        ],
+        "owners": [
+          {
+            "name": "xiaodoli@microsoft.com",
+            "type": "user"
+          }
+        ]
+      },
+      "keyVaultAccess": [
+        "podIdentity",
+        "secretBroker"
+      ],
+      "metrics": [
+        "appInsights",
+        "prometheus"
+      ],
+      "logging": [
+        "appInsights",
+        "prometheus"
+      ],
+      "tracing": [
+        "appInsights",
+        "openTracing"
+      ],
+      "ingress": [
+        "nginx"
+      ],
+      "certs": [
+        {
+          "name": "KeyVault-Certificate"
+        },
+        {
+          "name": "Ssl-Certificate"
+        },
+        {
+          "name": "Ssl-Aks-Default-Certificate"
+        },
+        {
+          "name": "Geneva-Certificate",
+          "type": "geneva"
+        }
+      ]
+    },
+    "appInsights": {
+      "name": "onecs-ai"
+    },
+    "cosmosDbs": [
+      {
+        "account": "onecs-docs",
+        "api": "SQL",
+        "db": "docs",
+        "collections": [
+          {
+            "name": "xd001",
+            "partition": "teamProjectCollectionId",
+            "throughput": 1000
+          }
+        ]
+      },
+      {
+        "account": "onecs-graph",
+        "api": "Gremlin",
+        "db": "graph",
+        "collections": [
+          {
+            "name": "xd001",
+            "partition": "teamProjectCollectionId",
+            "throughput": 1000
+          }
+        ]
+      }
+    ]
   },
   "code": {
     "external": [
