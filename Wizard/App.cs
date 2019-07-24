@@ -1,6 +1,5 @@
 using System;
 using System.IO;
-using System.Threading.Tasks;
 using Common;
 using McMaster.Extensions.CommandLineUtils;
 using Microsoft.Extensions.Logging;
@@ -28,6 +27,7 @@ namespace Wizard
 
         public void Run(string[] args)
         {
+            _logger.LogInformation($"Started {_context.Role}");
             Execute(args);
         }
 

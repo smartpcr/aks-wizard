@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Wizard.Assets;
 
 namespace Wizard
 {
@@ -38,6 +39,7 @@ namespace Wizard
                         loggingBuilder.AddConsole();
                     });
 
+                    services.TryAddSingleton<AssetManager>();
                     services.TryAddSingleton<App>();
                 });
 

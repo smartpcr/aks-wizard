@@ -1,19 +1,27 @@
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Wizard.Assets
 {
-    public class Global
+    public class Global : IAsset
     {
-        [Required, MinLength(2), MaxLength(20)]
-        public string ProductName { get; set; }
-        [Required]
-        public string SubscriptionName { get; set; }
-        [Required, RegularExpression("westus|westus2")]
-        public string Location { get; set; }
-        [Required]
-        public string ResourceGroup { get; set; }
-        [RegularExpression("dev|int|prod")]
+        [RegularExpression("dev|int|prod"), PropertyPath("global/envName")]
         public string EnvName { get; set; }
+
+        [PropertyPath("global/spaceName")]
         public string SpaceName { get; set; }
+
+        public string Key { get; }
+
+        public AssetType Type => AssetType.Global;
+
+        public IList<Dependency> Dependencies => new List<Dependency>()
+        {
+            new Dependency(AssetType.Subscription),
+            new Dependency(AssetType.ResourceGroup),
+            new Dependency(AssetType.Prodct)
+        };
+
+        public int SortOrder { get; }
     }
 }
