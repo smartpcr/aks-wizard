@@ -6,7 +6,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Wizard.Assets.KV
 {
-    [ObjectPath("kv")]
+    [ObjectPath("azure/kv")]
     public class KeyVault : BaseAsset, IUniqueValidator
     {
         [MaxLength(25), MinLength(3)] public string Name { get; set; }
@@ -26,6 +26,8 @@ namespace Wizard.Assets.KV
             int indent = 0)
         {
             var spaces = "".PadLeft(indent);
+            writer.Write($"{spaces}kv:\n");
+            spaces = "".PadLeft(indent + 2);
             writer.Write($"{spaces}name: {Name}\n");
         }
 

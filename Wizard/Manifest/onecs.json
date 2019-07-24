@@ -18,6 +18,29 @@
       "redis"
     ]
   },
-  "azure": [],
-  "services": []
+  "azure": {
+    "kv": {
+      "name": "xd-kv"
+    }
+  },
+  "code": {
+    "external": [
+      {
+        "name": "service-tree"
+      }
+    ],
+    "services": [
+      {
+        "name": "graph",
+        "type": "api"
+      },
+      {
+        "name": "assessment",
+        "type": "api"
+      },
+      {
+        "name": "one"
+      }
+    ]
+  }
 }
