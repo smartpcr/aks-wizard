@@ -76,6 +76,14 @@ namespace Wizard
             await builder.RunConsoleAsync();
         }
 
+        private void GenerateInfraSetupScripts(string[] args)
+        {
 
+        }
+
+        private void GenerateServiceCode(string[] args)
+        {
+
+        }
     }
 }
