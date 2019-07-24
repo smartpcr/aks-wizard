@@ -17,6 +17,7 @@ namespace Wizard.Assets
     public enum AssetType
     {
         Global,
+        RequiredComponents,
         Subscription,
         ResourceGroup,
         KeyVault,

@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace Wizard.Assets.CosmosDB
+namespace Wizard.Assets
 {
     public class CosmosDbAccount
     {

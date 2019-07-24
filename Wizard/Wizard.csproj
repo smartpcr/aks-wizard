@@ -7,11 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Assets\ACR" />
-    <Folder Include="Assets\AKS" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Fasterflect.Netstandard" Version="1.0.9" />
     <PackageReference Include="McMaster.Extensions.CommandLineUtils" Version="2.3.4" />
     <PackageReference Include="Microsoft.ApplicationInsights" Version="2.9.1" />

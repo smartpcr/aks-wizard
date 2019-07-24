@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.IO;
 using Microsoft.Extensions.Logging;
 
-namespace Wizard.Assets.KV
+namespace Wizard.Assets
 {
     [ObjectPath("azure/kv")]
     public class KeyVault : BaseAsset, IUniqueValidator

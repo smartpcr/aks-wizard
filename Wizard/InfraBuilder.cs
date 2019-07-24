@@ -53,6 +53,8 @@ namespace Wizard
             var valueYamlFile = Path.Combine(outputFolder, "values.yaml");
             if (File.Exists(valueYamlFile))
             {
+                _logger.LogInformation(new FileInfo(valueYamlFile).FullName);
+
                 File.Delete(valueYamlFile);
             }
 

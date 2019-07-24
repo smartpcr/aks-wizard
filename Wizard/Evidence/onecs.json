@@ -8,15 +8,18 @@
     "envName": "dev",
     "spaceName": "xiaodoli",
     "resourceGroup": "onecs",
-    "components": [
-      "kv",
-      "aks",
-      "acr",
-      "ai",
-      "cosmosdb",
-      "dns",
-      "redis"
-    ]
+    "components": {
+      "kv": true,
+      "aks": true,
+      "acr": true,
+      "ai": true,
+      "cosmosdb": {
+        "docDb": true,
+        "graphDb": true
+      },
+      "dns": true,
+      "redis": true
+    }
   },
   "azure": {
     "kv": {
