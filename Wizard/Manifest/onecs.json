@@ -1,0 +1,18 @@
+{
+  "productName": "onecs",
+  "subscription": "Compliance_Tools_Eng",
+  "location": "westus2",
+  "envName": "dev",
+  "spaceName": "xiaodoli",
+  "components": [
+    "kv",
+    "aks",
+    "acr",
+    "ai",
+    "cosmosdb",
+    "dns",
+    "redis"
+  ],
+  "azure": [],
+  "services": []
+}

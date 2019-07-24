@@ -7,6 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Common.Metrics\Common.Metrics.csproj" />
+    <ProjectReference Include="..\Common.KeyVault\Common.KeyVault.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.AzureAD.UI" Version="2.2.0" />
     <PackageReference Include="Microsoft.Azure.KeyVault" Version="3.0.3" />
@@ -15,12 +20,5 @@
     <PackageReference Include="Microsoft.Graph" Version="1.14.0" />
     <PackageReference Include="Microsoft.Identity.Client" Version="3.0.8" />
   </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Common.Auth\Common.Auth.csproj" />
-    <ProjectReference Include="..\Common.KeyVault\Common.KeyVault.csproj" />
-    <ProjectReference Include="..\Common.Metrics\Common.Metrics.csproj" />
-  </ItemGroup>
-
 
 </Project>
