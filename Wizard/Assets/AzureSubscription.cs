@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.IO;
 using Newtonsoft.Json;
 
 namespace Wizard.Assets
@@ -26,5 +27,11 @@ namespace Wizard.Assets
 
 
         public int SortOrder { get; }
+        public void WriteYaml(StreamWriter writer, int indent = 0)
+        {
+            var spaces = "".PadLeft(indent);
+            writer.Write($"{spaces}subscriptionName: {SubscriptionName}");
+            writer.Write($"{spaces}subscriptionId: {SubscriptionId}");
+        }
     }
 }

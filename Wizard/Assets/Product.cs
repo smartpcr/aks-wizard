@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.IO;
 
 namespace Wizard.Assets
 {
@@ -12,5 +13,11 @@ namespace Wizard.Assets
         public IList<Dependency> Dependencies => new List<Dependency>();
 
         public int SortOrder { get; }
+
+        public void WriteYaml(StreamWriter writer, int indent = 0)
+        {
+            var spaces = "".PadLeft(indent);
+            writer.Write($"{spaces}productName: " + Name);
+        }
     }
 }

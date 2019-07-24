@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.IO;
 
 namespace Wizard.Assets
 {
@@ -29,6 +30,13 @@ namespace Wizard.Assets
         public bool Validate()
         {
             return true;
+        }
+
+        public void WriteYaml(StreamWriter writer, int indent = 0)
+        {
+            var spaces = "".PadLeft(indent);
+            writer.Write($"{spaces}resourceGroup: {Name}");
+            writer.Write($"{spaces}location: {Location}");
         }
     }
 }

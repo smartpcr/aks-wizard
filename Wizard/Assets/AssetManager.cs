@@ -27,7 +27,7 @@ namespace Wizard.Assets
 
         public IList<IAsset> GetFulfilledComponents()
         {
-            var fulfilledComponents = _components.Values.Where(c => c.Dependencies.All(d => d.Id != null))
+            var fulfilledComponents = _components.Values.Where(c => c.Dependencies.All(d => d.Key != null))
                 .OrderBy(c => c.SortOrder).ToList();
             return fulfilledComponents;
         }
@@ -35,7 +35,7 @@ namespace Wizard.Assets
         public IList<IAsset> EvaluateUnfulfilledComponents(IAsset component)
         {
             var unfulfilledComponents = _components.Values.Where(c =>
-                    c.Dependencies.Any(d => string.IsNullOrEmpty(d.Id) && d.Type == component.Type))
+                    c.Dependencies.Any(d => string.IsNullOrEmpty(d.Key) && d.Type == component.Type))
                 .OrderBy(c => c.SortOrder).ToList();
 
             foreach (var unfulfilledComponent in unfulfilledComponents)
@@ -43,14 +43,26 @@ namespace Wizard.Assets
                 var dependency = unfulfilledComponent.Dependencies.FirstOrDefault(d => d.Type == component.Type);
                 if (dependency != null && (!dependency.CanHaveMany && !dependency.IsOptional))
                 {
-                    dependency.Id = component.Key;
+                    dependency.Key = component.Key;
                 }
             }
 
             var notFulfilledComponents = unfulfilledComponents
-                .Where(c => c.Dependencies.Any(d => string.IsNullOrEmpty(d.Id) && d.Type == component.Type))
+                .Where(c => c.Dependencies.Any(d => string.IsNullOrEmpty(d.Key) && d.Type == component.Type))
                 .OrderBy(c => c.SortOrder).ToList();
             return notFulfilledComponents;
+        }
+
+        public IAsset FindResolved(Dependency dependency)
+        {
+            var asset = GetFulfilledComponents().FirstOrDefault(c => c.Key == dependency.Key);
+
+            if (asset == null)
+            {
+                _logger.LogError($"Invalid manifest: unable to find {dependency.Type} by key {dependency.Key}");
+            }
+
+            return asset;
         }
     }
 }

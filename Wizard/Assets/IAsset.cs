@@ -1,5 +1,5 @@
-using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace Wizard.Assets
 {
@@ -9,6 +9,8 @@ namespace Wizard.Assets
         AssetType Type { get; }
         IList<Dependency> Dependencies { get; }
         int SortOrder { get; }
+
+        void WriteYaml(StreamWriter writer, int indent = 0);
     }
 
     public enum AssetType

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.IO;
 
 namespace Wizard.Assets.KV
 {
@@ -21,6 +22,10 @@ namespace Wizard.Assets.KV
         };
 
         public int SortOrder { get; }
+        public void WriteYaml(StreamWriter writer, int indent = 0)
+        {
+            throw new NotImplementedException();
+        }
 
         public KeyVault()
         {
